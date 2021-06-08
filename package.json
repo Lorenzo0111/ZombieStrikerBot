@@ -1,0 +1,16 @@
+{
+  "name": "zombiestriker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "watch": "nodemon index.js"
+  },
+  "author": "Lorenzo0111",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^12.5.3",
+    "mongoose": "^5.12.7",
+    "yaml": "^1.10.2"
+  }
+}
