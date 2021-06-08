@@ -1,5 +1,5 @@
 function isDev(config,user) {
-    return config.developers.includes(user.id);
+    return JSON.parse(config.developers).includes(user.id);
 }
 
 function isStaff(config,member) {

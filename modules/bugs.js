@@ -9,7 +9,9 @@ module.exports = (client, config) => {
             return;
         }
 
-        for (element in config.bugs) {
+        const bugs = JSON.parse(config.bugs);
+
+        for (element in bugs) {
             if (message.channel.id === config.bugs[element]) {
                  
                 const embed = new MessageEmbed()
@@ -48,8 +50,10 @@ module.exports = (client, config) => {
             return;
         }
 
-        for (element in config.bugs) {
-            if (reaction.message.channel.id === config.bugs[element]) {
+        const bugs = JSON.parse(config.bugs);
+
+        for (element in bugs) {
+            if (reaction.message.channel.id === bugs[element]) {
                 switch (reaction.emoji.name) {
                     case "❌":
                         reaction.users.remove(user)
