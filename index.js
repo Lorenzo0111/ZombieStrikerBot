@@ -1,13 +1,15 @@
-const Discord = require('discord.js');
-const YAML = require('yaml');
+const {Client,Intents,Collection} = require('discord.js');
 const fs = require('fs');
 
-// const configFile = fs.readFileSync('./config.yml', 'utf8')
-// const config = YAML.parse(configFile);
+require('dotenv').config();
+
 const config = process.env;
-const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
+const client = new Client({
+  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES,Intents.FLAGS.GUILD_MESSAGE_REACTIONS,Intents.FLAGS.GUILD_MEMBERS],
+  partials: ['MESSAGE', 'CHANNEL', 'REACTION']
+});
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-client.commands = new Discord.Collection();
+client.commands = new Collection();
 client.config = config;
 
 

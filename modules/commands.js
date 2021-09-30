@@ -1,5 +1,5 @@
 module.exports = (client) => {
-    client.on('message', async message => {
+    client.on('messageCreate', async message => {
         if (!message.content.startsWith("!")) return;
     
         const args = message.content.slice("!".length).trim().split(/ +/);

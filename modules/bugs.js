@@ -3,8 +3,7 @@ const permission = require("../custom/permission");
 
 module.exports = (client, config) => {
 
-    client.on('message',async (message) => {
-
+    client.on('messageCreate',async (message) => {
         if (message.author.id === client.user.id) {
             return;
         }
@@ -12,8 +11,8 @@ module.exports = (client, config) => {
         const bugs = JSON.parse(config.bugs);
 
         for (element in bugs) {
-            if (message.channel.id === config.bugs[element]) {
-                 
+            if (message.channelId === bugs[element]) {
+                console.log("hello world!"); 
                 const embed = new MessageEmbed()
                 .setTitle(element + " Issue")
                 .setAuthor(message.author.username, message.author.avatarURL())
@@ -25,7 +24,7 @@ module.exports = (client, config) => {
 
                 message.delete();
 
-                let msg = await message.channel.send(embed);
+                let msg = await message.channel.send({ embeds: [embed] });
 
                 msg.react("✅")
                 .then(() => msg.react("❌"))
@@ -53,18 +52,18 @@ module.exports = (client, config) => {
         const bugs = JSON.parse(config.bugs);
 
         for (element in bugs) {
-            if (reaction.message.channel.id === bugs[element]) {
+            if (reaction.message.channelId === bugs[element]) {
                 switch (reaction.emoji.name) {
                     case "❌":
                         reaction.users.remove(user)
                         if (permission.isDev(config,user)) {
-                            reaction.message.edit(prepareEmbed("#781111", "Invalid", reaction.message.embeds[0]))
+                            reaction.message.edit({ embeds: [prepareEmbed("#781111", "Invalid", reaction.message.embeds[0])] })
                         }
                         break;
                     case "✅":
                         reaction.users.remove(user)
                         if (permission.isDev(config,user)) {
-                            reaction.message.edit(prepareEmbed("#0ca82b", "Solved", reaction.message.embeds[0]))
+                            reaction.message.edit({ embeds: [prepareEmbed("#0ca82b", "Solved", reaction.message.embeds[0])] })
                         }
                         break;
                     default:
