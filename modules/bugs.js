@@ -12,7 +12,6 @@ module.exports = (client, config) => {
 
         for (element in bugs) {
             if (message.channelId === bugs[element]) {
-                console.log("hello world!"); 
                 const embed = new MessageEmbed()
                 .setTitle(element + " Issue")
                 .setAuthor(message.author.username, message.author.avatarURL())
