@@ -3,21 +3,20 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     name: "bugspanel",
-    description: "Send bugs panel",
-    execute: async (message,args,client) => {
-        if (!permission.isStaff(client.config,message.member)) {
+    execute: async (interaction,client) => {
+        if (!permission.isStaff(client.config,interaction.member)) {
             return;
         }
 
-        if (args.length < 1) {
-            message.channel.send(":x: Please insert a valid plugin name.")
+        const name = interaction.options.getString("plugin");
+        if (!name) {
             return;
         }
 
         const embed = new MessageEmbed()
         .setColor("#03befc")
-        .setTitle(args[0] + " bugs")
-        .setDescription(`This is where you can post your bugs to ${args[0]}. 
+        .setTitle(name + " bugs")
+        .setDescription(`This is where you can post your bugs to ${name}. 
          In the format:
 
         > 1.Description
@@ -25,6 +24,7 @@ module.exports = {
         `)
         .setFooter("Zombie_Striker Bugs Tracker", client.user.avatarURL())
 
-        message.channel.send(embed);
+        await interaction.reply({ content: 'Done!', ephemeral: true });
+        interaction.channel.send({ embeds: [embed]});
     }
 }

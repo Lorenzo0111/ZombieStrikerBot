@@ -1,5 +1,8 @@
 const {Client,Intents,Collection} = require('discord.js');
 const fs = require('fs');
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord-api-types/v9');
+const { SlashCommandBuilder } = require('@discordjs/builders');
 
 require('dotenv').config();
 
@@ -12,16 +15,52 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 client.commands = new Collection();
 client.config = config;
 
+const commands = [new SlashCommandBuilder()
+	.setName('bugspanel')
+	.setDescription('Send the bugs panel in the channel')
+	.addStringOption(option =>
+		option.setName('plugin')
+			.setDescription('The plugin name')
+			.setRequired(true)).toJSON()]; 
 
 console.log('[»] Loading commands..\n');
 
 for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
+  const command = require(`./commands/${file}`);
 
-	  client.commands.set(command.name, command);
+	client.commands.set(command.name, command);
 
-    console.log("[+] Loaded " + command.name + " (" + file + ")")
+  console.log("[+] Loaded " + command.name + " (" + file + ")")
 }
+
+for (const command of commands) {
+  command.permissions = [
+    {
+      id: Number(config.staff),
+      type: 'ROLE',
+      permission: true,
+    },
+  ];
+  command.defaultPermission = false;
+}
+
+const rest = new REST({ version: '9' }).setToken(config.token);
+
+(async () => {
+	try {
+		console.log('[|] Started refreshing application (/) commands.');
+
+		await rest.put(
+			Routes.applicationGuildCommands(config.client, config.guild),
+			{ body: commands },
+		);
+
+		console.log('[|] Successfully reloaded application (/) commands.');
+	} catch (error) {
+		console.error(error);
+	}
+})();
+
 
 // Custom modules
 

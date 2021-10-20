@@ -1,14 +1,13 @@
 module.exports = (client) => {
-    client.on('messageCreate', async message => {
-        if (!message.content.startsWith("!")) return;
+    client.on('interactionCreate', async interaction => {
+        if (!interaction.isCommand()) return;
     
-        const args = message.content.slice("!".length).trim().split(/ +/);
-        const command = args.shift().toLowerCase();
+        const command = interaction.commandName;
     
         if (!client.commands.has(command)) return;
     
         try {
-            client.commands.get(command).execute(message, args, client);
+            client.commands.get(command).execute(interaction, client);
         } catch (error) {
             console.error(error);
         }
