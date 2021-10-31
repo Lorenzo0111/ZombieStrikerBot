@@ -15,13 +15,23 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 client.commands = new Collection();
 client.config = config;
 
-const commands = [new SlashCommandBuilder()
+const commands = [
+  new SlashCommandBuilder()
 	.setName('bugspanel')
 	.setDescription('Send the bugs panel in the channel')
 	.addStringOption(option =>
 		option.setName('plugin')
 			.setDescription('The plugin name')
-			.setRequired(true)).toJSON()]; 
+			.setRequired(true)).toJSON(),
+
+  new SlashCommandBuilder()
+  .setName('verify')
+  .setDescription('Link your discord account to your spigot one.')
+  .addIntegerOption(option =>
+  option.setName('id')
+  .setDescription('Your spigot id')
+  .setRequired(true)).toJSON()
+]; 
 
 console.log('[»] Loading commands..\n');
 
@@ -34,7 +44,7 @@ for (const file of commandFiles) {
 }
 
 for (const command of commands) {
-  command.permissions = [
+  command.permission = [
     {
       id: Number(config.staff),
       type: 'ROLE',
