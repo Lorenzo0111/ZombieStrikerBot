@@ -24,9 +24,12 @@ module.exports = (client) => {
                 return;
             }
 
-            interaction.reply("The request from <@" + data[2] + ">(https://spigotmc.org/members/" + data[1] + ") has been accepted.\n**Remember to manually add the plugin role.**")
+            interaction.reply("The request from <@" + data[2] + ">(https://spigotmc.org/members/" + data[1] + ") has been accepted.")
             interaction.message.delete();
             member.send("**Hello! Your spigot verification has been accepted.**\nNow you can ask support for our premium plugins.");
+            
+            const role = await interaction.guild.roles.fetch(process.env.verified);
+            member.roles.add(role);
             return;
         }
 
