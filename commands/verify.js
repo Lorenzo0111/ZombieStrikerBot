@@ -8,13 +8,13 @@ module.exports = {
 
         await interaction.deferReply();
 
-        const {data} = await axios.get("https://api.spigotmc.org/simple/0.2/index.php?action=getAuthor&id="+id);       
+        const {data} = await axios.get("https://api.spigotmc.org/simple/0.2/index.php?action=getAuthor&id="+id+"&cb="+Date.now());       
         if (!data.id) {
             return interaction.editReply("Please insert your spigot id. You can find it in your spigot profile page: https://i.imgur.com/ctPXhqw.png");
         }
         
         if (!data.identities.discord || (interaction.user.id != data.identities.discord && interaction.user.tag != data.identities.discord)) {
-            return interaction.editReply("Your SpigotMC account is not linked to your discord account. Please link it by setting your discord identity to " + interaction.user.tag + ".\nYou can do that by editing the field here: https://www.spigotmc.org/account/contact-details");
+            return interaction.editReply("Your SpigotMC account is not linked to your discord account. Please link it by setting your discord identity to " + interaction.user.tag + ".\nYou can do that by editing the field here: https://www.spigotmc.org/account/contact-details\n**Discord field:** " + data.identities.discord);
         }
 
         interaction.editReply("Done! I contacted our staff for manual verification.");
