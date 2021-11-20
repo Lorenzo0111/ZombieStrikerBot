@@ -26,11 +26,17 @@ const commands = [
 
   new SlashCommandBuilder()
   .setName('verify')
-  .setDescription('Link your discord account to your spigot one.')
-  .addIntegerOption(option =>
-  option.setName('id')
-  .setDescription('Your spigot id')
-  .setRequired(true)).toJSON()
+  .setDescription('Link your discord account to your spigot/songoda one.')
+  .addStringOption(option => 
+    option.setName('platform')
+      .setRequired(true)
+      .setDescription('Platform name')
+      .addChoice('spigot', 'spigot')
+      .addChoice('songoda', 'songoda'))
+  .addStringOption(option =>
+    option.setName('id')
+      .setDescription('Your platform id')
+      .setRequired(true)).toJSON()
 ]; 
 
 console.log('[»] Loading commands..\n');

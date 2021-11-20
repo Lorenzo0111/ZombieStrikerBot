@@ -1,45 +1,62 @@
 const { MessageEmbed,MessageActionRow,MessageButton } = require('discord.js');
 const axios = require("axios").default;
+const spigot = require('../verifier/spigot');
 
 module.exports = {
     name: "verify",
     execute: async (interaction,client) => {
+        const platform = interaction.options.getString("platform");
         const id = interaction.options.getInteger("id");
 
         await interaction.deferReply();
 
-        const {data} = await axios.get("https://api.spigotmc.org/simple/0.2/index.php?action=getAuthor&id="+id+"&cb="+Date.now());       
-        if (!data.id) {
-            return interaction.editReply("Please insert your spigot id. You can find it in your spigot profile page: https://i.imgur.com/ctPXhqw.png");
-        }
-        
-        if (!data.identities.discord || (interaction.user.id != data.identities.discord && interaction.user.tag != data.identities.discord)) {
-            return interaction.editReply("Your SpigotMC account is not linked to your discord account. Please link it by setting your discord identity to " + interaction.user.tag + ".\nYou can do that by editing the field here: https://www.spigotmc.org/account/contact-details\n**Discord field:** " + data.identities.discord);
+        let verified;
+        let manual;
+        let profile;
+
+        if (platform === "spigot") {
+            verified = await spigot.verify(interaction,id);
+            manual = spigot.manual;
+            profile = spigot.profile(id);
+        } else if (platform === "songoda") {
+            verified = await songoda.verified(interaction,id);
+            manual = songoda.manual;
+            profile = await songoda.profile(id);
+        } else {
+            interaction.editReply("Invalid platform name, you can only use songoda or spigotmc");
+            return;
         }
 
-        interaction.editReply("Done! I contacted our staff for manual verification.");
-        const row = new MessageActionRow()
-			.addComponents(
-				new MessageButton()
-					.setCustomId('verify_' + data.id + "_" + interaction.user.id)
-					.setLabel('Confirm')
-					.setStyle('SUCCESS'),
-                new MessageButton()
-					.setCustomId('deny_' + interaction.user.id)
-					.setLabel('Refuse')
-					.setStyle('DANGER')
-			);
-        
-        const embed = new MessageEmbed()
-        .setTitle("New pending verification")
-        .setDescription("<@" + interaction.user.id + "> is waiting for manual verification.\n\n[SpigotMC profile](https://spigotmc.org/members/" + id + ")")
-        .setColor("#fc8c03")
-        
-        const pending = await interaction.guild.channels.fetch(process.env.pending);
-        if (!pending) {
-            return console.error("Unable to find pending channel.")
+        if (!verified) {
+            return;
         }
 
-        pending.send({embeds:[embed],components:[row]});
+        if (manual) {
+            interaction.editReply("Done! I contacted our staff for manual verification.");
+            const row = new MessageActionRow()
+                .addComponents(
+                    new MessageButton()
+                        .setCustomId('verify_' + data.id + "_" + interaction.user.id)
+                        .setLabel('Confirm')
+                        .setStyle('SUCCESS'),
+                    new MessageButton()
+                        .setCustomId('deny_' + interaction.user.id)
+                        .setLabel('Refuse')
+                        .setStyle('DANGER')
+                );
+            
+            const embed = new MessageEmbed()
+            .setTitle("New pending verification")
+            .setDescription("<@" + interaction.user.id + "> is waiting for manual verification.\n\n[Profile](" + profile + ")")
+            .setColor("#fc8c03")
+            
+            const pending = await interaction.guild.channels.fetch(process.env.pending);
+            if (!pending) {
+                return console.error("Unable to find pending channel.")
+            }
+
+            pending.send({embeds:[embed],components:[row]});
+            return;
+        }
     }
 }
