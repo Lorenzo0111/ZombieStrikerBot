@@ -19,7 +19,7 @@ module.exports = {
             manual = spigot.manual;
             profile = spigot.profile(id);
         } else if (platform === "songoda") {
-            verified = await songoda.verified(interaction,id);
+            verified = await songoda.verify(interaction,id);
             manual = songoda.manual;
             profile = await songoda.profile(id);
         } else {
