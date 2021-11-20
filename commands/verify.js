@@ -6,7 +6,7 @@ module.exports = {
     name: "verify",
     execute: async (interaction,client) => {
         const platform = interaction.options.getString("platform");
-        const id = interaction.options.getInteger("id");
+        const id = interaction.options.getString("id");
 
         await interaction.deferReply();
 
