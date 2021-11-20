@@ -1,6 +1,6 @@
 const { MessageEmbed,MessageActionRow,MessageButton } = require('discord.js');
-const axios = require("axios").default;
 const spigot = require('../verifier/spigot');
+const songoda = require('../verifier/songoda');
 
 module.exports = {
     name: "verify",

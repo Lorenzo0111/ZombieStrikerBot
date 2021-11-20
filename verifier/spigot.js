@@ -1,3 +1,5 @@
+const axios = require('axios').default;
+
 async function verify(interaction,id) {
     const {data} = await axios.get("https://api.spigotmc.org/simple/0.2/index.php?action=getAuthor&id="+id+"&cb="+Date.now());       
     if (!data.id) {

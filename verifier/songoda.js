@@ -1,3 +1,5 @@
+const axios = require('axios').default;
+
 async function verify(interaction,id) {
     const {data} = await axios.get("https://songoda.com/api/dashboard/products/qualityarmoryvehicles-custom-vehicles/payments?token=" + process.env.songoda + "&cb="+Date.now());       
     const buyers = data.data;
