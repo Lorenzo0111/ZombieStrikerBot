@@ -36,7 +36,7 @@ module.exports = {
             const row = new MessageActionRow()
                 .addComponents(
                     new MessageButton()
-                        .setCustomId('verify_' + data.id + "_" + interaction.user.id)
+                        .setCustomId('verify_' + id + "_" + interaction.user.id)
                         .setLabel('Confirm')
                         .setStyle('SUCCESS'),
                     new MessageButton()
