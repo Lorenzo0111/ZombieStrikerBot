@@ -6,7 +6,9 @@ module.exports = {
 
         await interaction.deferReply();
 
-        messages.forEach(message => {
+        let int = 0;
+
+        for (const message of messages) {
             const embeds = message.embeds;
 
             if (embeds.length > 0) {
@@ -16,13 +18,13 @@ module.exports = {
                 for (const field of fields) {
                     if (field.name === "Status" && field.value === "Solved") {
                         message.delete();
+                        int++;
                         return;                        
                     }
                 }
             }
+        }
 
-        });
-
-        interaction.editReply("Succesfully deleted " + messages.size + " messages.");
+        interaction.editReply("Succesfully deleted " + int + " messages.");
     }
 }
