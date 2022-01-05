@@ -36,7 +36,15 @@ const commands = [
   .addStringOption(option =>
     option.setName('id')
       .setDescription('Your platform id')
-      .setRequired(true)).toJSON()
+      .setRequired(true)).toJSON(),
+
+  new SlashCommandBuilder()
+	  .setName('removefixed')
+	  .setDescription('Clear all fixed bugs from a channel')
+	  .addChannelOption(option =>
+	  	option.setName('channel')
+			  .setDescription('The channel to clear')
+			  .setRequired(true)).toJSON(),
 ]; 
 
 console.log('[»] Loading commands..\n');
