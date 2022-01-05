@@ -4,6 +4,8 @@ module.exports = {
         const channel = interaction.options.getChannel("channel");
         const messages = await channel.messages.fetch({ limit: 10 });
 
+        await interaction.deferReply();
+
         messages.forEach(message => {
             const embeds = message.embeds;
 
@@ -20,5 +22,7 @@ module.exports = {
             }
 
         });
+
+        interaction.editReply("Succesfully deleted " + messages.size + " messages.");
     }
 }
