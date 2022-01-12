@@ -3,10 +3,9 @@ const fs = require('fs');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const config = require('./config.json');
+const loadCommands = require('./custom/commandLoader');
 
-require('dotenv').config();
-
-const config = process.env;
 const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES,Intents.FLAGS.GUILD_MESSAGE_REACTIONS,Intents.FLAGS.GUILD_MEMBERS],
   partials: ['MESSAGE', 'CHANNEL', 'REACTION']
@@ -15,6 +14,7 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 client.commands = new Collection();
 client.config = config;
 
+console.log('[»] Loading commands..\n');
 const commands = [
   new SlashCommandBuilder()
 	.setName('bugspanel')
@@ -45,9 +45,15 @@ const commands = [
 	  	option.setName('channel')
 			  .setDescription('The channel to clear')
 			  .setRequired(true)).toJSON(),
-]; 
+];
 
-console.log('[»] Loading commands..\n');
+const cmds = loadCommands(config.commands);
+for (const cmdName of cmds.keys()) {
+  const cmd = cmds.get(cmdName);
+
+  commands.push(cmd.asCommand());
+  client.commands.set(cmdName, cmd);
+}
 
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);

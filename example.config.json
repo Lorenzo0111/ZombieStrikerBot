@@ -1,0 +1,29 @@
+{
+    "bugs": {
+        "PluginName": "ChannelID"
+    },
+    "developers": ["DeveloperID"],
+    "staff": 1234567,
+    "status": "SpigotMC",
+    "token": "Discord token",
+    "client": 1234567,
+    "guild": 1234567,
+    "pending": 1234567,
+    "verified": 1234567,
+    "songoda": "Songoda token",
+    "commands": [
+        {
+            "name": "test",
+            "onlystaff": false,
+            "description": "Hello world",
+            "args": [
+                {
+                    "name": "test",
+                    "description": "Test argument",
+                    "type": "string"
+                }
+            ],
+            "result": "Your argument: ${test}"
+        }
+    ]
+}
