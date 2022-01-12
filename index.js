@@ -109,7 +109,7 @@ fs.readdirSync('modules')
 client.once('ready', () => {
     client.user.setStatus('online');
 
-    client.user.setActivity(config.astatus, { type: "WATCHING" });
+    client.user.setActivity(config.status, { type: "WATCHING" });
 
 	console.log('\n[»] Discord bot is now online!');
 
