@@ -50,7 +50,7 @@ module.exports = {
             .setDescription("<@" + interaction.user.id + "> is waiting for manual verification.\n\n[Profile](" + profile + ")")
             .setColor("#fc8c03")
             
-            const pending = await interaction.guild.channels.fetch(process.env.pending);
+            const pending = await interaction.guild.channels.fetch(client.config.pending);
             if (!pending) {
                 return console.error("Unable to find pending channel.")
             }
