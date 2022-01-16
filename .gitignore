@@ -3,3 +3,10 @@ config.yml
 .env
 database.db
 config.json
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
