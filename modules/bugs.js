@@ -48,7 +48,7 @@ module.exports = (client, config) => {
             return;
         }
 
-        const bugs = JSON.parse(config.bugs);
+        const bugs = config.bugs;
 
         for (element in bugs) {
             if (reaction.message.channelId === bugs[element]) {
